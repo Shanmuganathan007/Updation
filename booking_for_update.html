@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Options</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h3 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .option-btn {
+            width: 200px;
+            padding: 8px 12px;
+            margin: 8px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .option-btn:hover {
+            background-color: #007BFF;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Booking Options</h3>
+        <div class="options-container">
+            <button class="option-btn" onclick="location.href='aadhar_update.html'">Aadhar Update</button>
+            <button class="option-btn" onclick="location.href='ration_card_update.html'">Ration Card Update</button>
+            <button class="option-btn" onclick="location.href='income_certificate_update.html'">Income Certificate Update</button>
+            <button class="option-btn" onclick="location.href='voter_id_update.html'">Voter ID Update</button>
+        </div>
+    </div>
+</body>
+</html>

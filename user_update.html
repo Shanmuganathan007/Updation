@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Personal Details & OTP Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        let generatedOtp = "";
+
+        function generateOtp() {
+            return Math.floor(1000 + Math.random() * 9000).toString();
+        }
+
+        // Handle personal details submission and generate OTP
+        function submitPersonalDetails(event) {
+            event.preventDefault();
+            generatedOtp = generateOtp();
+            alert("Your OTP is: " + generatedOtp); // In production, send via SMS or email
+
+            document.getElementById('personalDetailsForm').classList.add('hidden');
+            document.getElementById('otpVerificationForm').classList.remove('hidden');
+        }
+
+        // Verify OTP and show options
+        function verifyOtp(event) {
+            event.preventDefault();
+            const enteredOtp = document.getElementById('otp').value;
+
+            if (enteredOtp === generatedOtp) {
+                alert("OTP Verified Successfully!");
+
+                // Hide OTP section and show next step options
+                document.getElementById('otpVerificationForm').classList.add('hidden');
+                document.getElementById('nextStepOptions').classList.remove('hidden');
+            } else {
+                alert("Invalid OTP. Please try again.");
+            }
+        }
+
+        // Handle selection of the next step
+        function handleNextStep(option) {
+            if (option === 'shortestDistance') {
+                window.location.href = "shortest_distance.html";
+            } else if (option === 'bookingForUpdate') {
+                window.location.href = "booking_for_update.html";
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- User Personal Details Form -->
+    <div class="container" id="personalDetailsForm">
+        <h2>Fill Your Personal Details</h2>
+        <form onsubmit="submitPersonalDetails(event)">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- OTP Verification Form -->
+    <div class="container hidden" id="otpVerificationForm">
+        <h2>Verify OTP</h2>
+        <form onsubmit="verifyOtp(event)">
+            <label for="otp">Enter OTP:</label>
+            <input type="number" id="otp" name="otp" required>
+            <button type="submit">Verify OTP</button>
+        </form>
+    </div>
+
+    <!-- Next Step Options -->
+    <div class="container hidden" id="nextStepOptions">
+        <h2>Select Next Step</h2>
+        <button onclick="handleNextStep('shortestDistance')">Shortest Distance</button>
+        <button onclick="handleNextStep('bookingForUpdate')">Booking for Update</button>
+    </div>
+</body>
+</html>

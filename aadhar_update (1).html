@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Appointment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        form, .booking-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        select, input[type="date"], input[type="time"], button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container" id="aadharUpdateForm">
+        <h2>Aadhar Update</h2>
+        <form onsubmit="return showBookingTime()">
+            <label for="district">Select District:</label>
+            <select id="district" name="district" onchange="updateCities()">
+                <option value="">Select District</option>
+                <option value="Ariyalur">Ariyalur</option>
+                <option value="Chengalpattu">Chengalpattu</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Coimbatore">Coimbatore</option>
+                <option value="Cuddalore">Cuddalore</option>
+                <option value="Dharmapuri">Dharmapuri</option>
+                <option value="Dindigul">Dindigul</option>
+                <option value="Erode">Erode</option>
+                <option value="Kallakurichi">Kallakurichi</option>
+                <option value="Kanchipuram">Kanchipuram</option>
+                <option value="Kanyakumari">Kanyakumari</option>
+                <option value="Karur">Karur</option>
+                <option value="Krishnagiri">Krishnagiri</option>
+                <option value="Madurai">Madurai</option>
+                <option value="Mayiladuthurai">Mayiladuthurai</option>
+                <option value="Nagapattinam">Nagapattinam</option>
+                <option value="Namakkal">Namakkal</option>
+                <option value="Nilgiris">Nilgiris</option>
+                <option value="Perambalur">Perambalur</option>
+                <option value="Pudukkottai">Pudukkottai</option>
+                <option value="Ramanathapuram">Ramanathapuram</option>
+                <option value="Ranipet">Ranipet</option>
+                <option value="Salem">Salem</option>
+                <option value="Sivaganga">Sivaganga</option>
+                <option value="Tenkasi">Tenkasi</option>
+                <option value="Thanjavur">Thanjavur</option>
+                <option value="Theni">Theni</option>
+                <option value="Thoothukudi">Thoothukudi</option>
+                <option value="Tiruchirappalli">Tiruchirappalli</option>
+                <option value="Tirunelveli">Tirunelveli</option>
+                <option value="Tirupathur">Tirupathur</option>
+                <option value="Tiruppur">Tiruppur</option>
+                <option value="Tiruvallur">Tiruvallur</option>
+                <option value="Tiruvannamalai">Tiruvannamalai</option>
+                <option value="Tiruvarur">Tiruvarur</option>
+                <option value="Vellore">Vellore</option>
+                <option value="Viluppuram">Viluppuram</option>
+                <option value="Virudhunagar">Virudhunagar</option>
+            </select>
+
+            <label for="city">Select City:</label>
+            <select id="city" name="city">
+                <option value="">Select City</option>
+            </select>
+
+            <button type="submit">Next</button>
+        </form>
+    </div>
+
+    <div class="booking-container" id="bookingTimeForm" style="display:none;">
+        <h2>Book Your Appointment</h2>
+        <label for="date">Select Date:</label>
+        <input type="date" id="date" required>
+        <label for="time">Select Time:</label>
+        <input type="time" id="time" required>
+        <button onclick="confirmBooking()">Confirm Booking</button>
+    </div>
+
+    <script>
+        const cityData = {
+            "Ariyalur": ["Andimadam", "Ariyalur", "Sendurai", "Udayarpalayam"],
+            "Chengalpattu": ["Chengalpattu", "Cheyyur", "Madurantakam", "Pallavaram", "Tambaram", "Thirukalukundram", "Thiruporur", "Vandalur"],
+            "Chennai": ["Alandur", "Ambattur", "Aminjikarai", "Ayanavaram", "Egmore", "Guindy", "Madhavaram", "Maduravoyal", "Mambalam", "Mylapore", "Perambur", "Purasawalkam", "Sholinganallur", "Tondiarpet", "Tiruvotriyur", "Velachery"],
+            "Coimbatore": ["Annur", "Coimbatore North", "Coimbatore South", "Kinathukadavu", "Madukkarai", "Mettupalayam", "Perur", "Pollachi", "Sulur", "Thondamuthur", "Valparai"],
+            "Cuddalore": ["Bhuvanagiri", "Chidambaram", "Cuddalore", "Kattumannarkoil", "Kurinjipadi", "Panruti", "Srimushnam", "Titakudi", "Veppur", "Virudhachalam"],
+            "Dharmapuri": ["Dharmapuri", "Harur", "Karimangalam", "Nallampalli", "Palacode", "Pappireddipatti", "Pennagaram"],
+            "Dindigul": ["Attur", "Dindigul East", "Dindigul West", "Guziliamparai", "Kodaikanal", "Natham", "Nilakottai", "Oddanchatram", "Palani", "Vedasandur"],
+            "Erode": ["Anthiyur", "Bhavani", "Erode", "Gobichettipalayam", "Kodumudi", "Modakurichi", "Nambiyur", "Perundurai", "Sathyamangalam", "Thalavadi"],
+            "Kallakurichi": ["Chinnasalem", "Kallakurichi", "Kalvarayan Hills", "Sankarapuram", "Tirukkoyilur", "Ulundurpet"],
+            "Kanchipuram": ["Kanchipuram", "Sriperumbudur", "Uthiramerur", "Walajabad"],
+            "Kanyakumari": ["Agastheeswaram", "Kalkulam", "Killiyoor", "Thiruvattar", "Thovalai", "Vilavancode"],
+            "Karur": ["Aravakurichi", "Kadavur", "Karur", "Krishnarayapuram", "Kulithalai", "Manmangalam", "Pugalur"],
+            
+    "Krishnagiri": ["Anchetty", "Bargur", "Denkanikottai", "Hosur", "Krishnagiri", "Pochampalli", "Shoolagiri", "Thally", "Uthangarai", "Veppanapalli"],
+    "Madurai": ["Alanganallur", "Kalligudi", "Madurai East", "Madurai North", "Madurai South", "Melur", "Peraiyur", "Thirumangalam", "Thiruparankundram", "Usilampatti", "Vadipatti"],
+    "Mayiladuthurai": ["Kuthalam", "Mayiladuthurai", "Sirkazhi", "Tharangambadi"],
+    "Nagapattinam": ["Kilvelur", "Nagapattinam", "Thirukkuvalai", "Vedaranyam"],
+    "Namakkal": ["Kolli Hills", "Kumarapalayam", "Mohanoor", "Namakkal", "Paramathi Velur", "Rasipuram", "Sendamangalam", "Tiruchengode"],
+    "Nilgiris": ["Coonoor", "Gudalur", "Kotagiri", "Kundah", "Pandalur", "Udhagamandalam (Ooty)"],
+    "Perambalur": ["Alathur", "Kunnam", "Perambalur", "Veppanthattai"],
+    "Pudukkottai": ["Alangudi", "Aranthangi", "Avadaiyarkoil", "Gandarvakottai", "Iluppur", "Karambakudi", "Kulathur", "Manamelkudi", "Ponnamaravathi", "Pudukkottai", "Thirumayam", "Viralimalai"],
+    "Ramanathapuram": ["Kadaladi", "Kamuthi", "Mudukulathur", "Paramakudi", "Ramanathapuram", "Rameswaram", "Tiruvadanai"],
+    "Ranipet": ["Arakkonam", "Arcot", "Nemili", "Sholingur", "Walajah"],
+    "Salem": ["Attur", "Edappadi", "Gangavalli", "Kadaiyampatty", "Mettur", "Omalur", "Pethanaickenpalayam", "Salem", "Sankagiri", "Vazhapadi", "Yercaud"],
+    "Sivaganga": ["Devakottai", "Ilayangudi", "Karaikudi", "Manamadurai", "Sivaganga", "Thirupathur", "Tiruppuvanam"],
+    "Tenkasi": ["Alangulam", "Kadayanallur", "Sankarankovil", "Shenkottai", "Sivagiri", "Tenkasi", "Thiruvengadam", "Veerakeralampudur"],
+    "Thanjavur": ["Boothalur", "Kumbakonam", "Orathanadu", "Papanasam", "Pattukkottai", "Peravurani", "Thanjavur", "Thiruvaiyaru", "Thiruvidaimarudur"],
+    "Theni": ["Andipatti", "Bodinayakanur", "Periyakulam", "Theni", "Uthamapalayam"],
+    "Thoothukudi": ["Eral", "Ettayapuram", "Kayathar", "Kovilpatti", "Ottapidaram", "Sathankulam", "Srivaikuntam", "Thoothukudi", "Tiruchendur", "Vilathikulam"],
+    "Tiruchirappalli": ["Lalgudi", "Manachanallur", "Manapparai", "Marungapuri", "Musiri", "Srirangam", "Thiruverumbur", "Thottiyam", "Tiruchirappalli"],
+    "Tirunelveli": ["Ambasamudram", "Cheranmahadevi", "Manur", "Nanguneri", "Palayamkottai", "Radhapuram", "Thisayanvilai", "Tirunelveli"],
+    "Tirupathur": ["Ambur", "Natrampalli", "Tirupathur", "Vaniyambadi"],
+    "Tiruppur": ["Avinashi", "Dharapuram", "Kangeyam", "Madathukulam", "Palladam", "Tiruppur North", "Tiruppur South", "Udumalaipettai"],
+    "Tiruvallur": ["Avadi", "Gummidipoondi", "Pallipattu", "Ponneri", "Poonamallee", "R.K. Pet", "Tiruthani", "Tiruvallur", "Uthukottai"],
+    "Tiruvannamalai": ["Arani", "Chengam", "Chetpet", "Jamunamarathur", "Kalambur", "Kilpennathur", "Polur", "Thandarampattu", "Tiruvannamalai", "Vandavasi"],
+    "Tiruvarur": ["Kodavasal", "Koothanallur", "Mannargudi", "Nannilam", "Needamangalam", "Thiruthuraipoondi", "Tiruvarur", "Valangaiman"],
+    "Vellore": ["Anaicut", "Gudiyatham", "Katpadi", "Pernambut", "Vellore"],
+    "Viluppuram": ["Gingee", "Kandachipuram", "Marakkanam", "Melmalayanur", "Thiruvennainallur", "Tindivanam", "Ulundurpet", "Vikravandi", "Viluppuram"],
+    "Virudhunagar": ["Aruppukkottai", "Kariapatti", "Rajapalayam", "Sattur", "Sivakasi", "Srivilliputhur", "Tiruchuli", "Vembakottai", "Virudhunagar"]
+}
+ ;
+
+        function updateCities() {
+            const district = document.getElementById("district").value;
+            const citySelect = document.getElementById("city");
+            citySelect.innerHTML = '<option value="">Select City</option>';
+            if (district && cityData[district]) {
+                cityData[district].forEach(city => {
+                    citySelect.innerHTML += `<option value="${city}">${city}</option>`;
+                });
+            }
+        }
+
+        function showBookingTime() {
+            document.getElementById('aadharUpdateForm').style.display = 'none';
+            document.getElementById('bookingTimeForm').style.display = 'block';
+            return false;
+        }
+
+        function confirmBooking() {
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            if (!date || !time) {
+                alert('Please select both date and time.');
+                return;
+            }
+            alert(`Booking Confirmed!\nDate: ${date}\nTime: ${time}`);
+        }
+    </script>
+</body>
+</html>
