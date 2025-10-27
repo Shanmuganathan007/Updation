@@ -1,1 +1,3 @@
-# Updation
+# UPDATION 
+Admin : A admin need to update that the post office or e sevai will be open or not on that day this process will be accessed by the particular district and  taluk whose the admin and also they need to set the time for booking token like (today token available from 9.00am to 11.00am for 25 token and the remaining will be offline)
+User : here the user need to select what to update like (it should be aadhar, ration etc...) and the they should select the district and taluk and then they had a option to (find the shortest path for the office or e sevai and for booking of token here the option will given by admin and the user select the timings between that )
